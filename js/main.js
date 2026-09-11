@@ -4,6 +4,7 @@ const story = document.querySelector('.aperture-story');
 const hero = document.querySelector('.hero');
 const overlay = document.querySelector('.shutter-overlay');
 const skip = document.querySelector('.skip-intro');
+const onlineEntry = document.querySelector('.online-entry');
 const heroContent = document.querySelector('.hero-inner');
 const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -32,6 +33,7 @@ if (window.gsap && window.ScrollTrigger && !window.apertureTimedOut) {
     let lastClosed;
 
     const updateAccess = progress => {
+      onlineEntry.inert = progress >= 0.33;
       const interactive = progress >= 0.85;
       const closed = progress >= 0.995;
       if (interactive !== lastInteractive) {
@@ -73,6 +75,7 @@ if (window.gsap && window.ScrollTrigger && !window.apertureTimedOut) {
       .fromTo('.hero-caption', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 }, 0.7)
       .to('.shutter-copy', { opacity: 0, y: -12, duration: 0.15 }, 0.06)
       .to('.shutter-bottom', { opacity: 0, duration: 0.15 }, 0.18)
+      .to(onlineEntry, { autoAlpha: 0, y: -16, duration: 0.15 }, 0.18)
       .to(overlay, { opacity: 0, duration: 0.05 }, 0.95);
 
     const skipIntro = () => {
@@ -89,6 +92,7 @@ if (window.gsap && window.ScrollTrigger && !window.apertureTimedOut) {
       skip.removeEventListener('click', skipIntro);
       root.classList.remove('aperture-ready');
       heroContent.inert = false;
+      onlineEntry.inert = false;
       overlay.style.removeProperty('visibility');
       skip.hidden = true;
     };
